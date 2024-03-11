@@ -1,7 +1,7 @@
 <?php
 require_once("Alunno.php");
 
-class Classe{
+class Classe implements JsonSerializable{
     protected $modo = [];
     public function __construct(){
         $a = new Alunno("Mario", "Rossi", 18);
@@ -26,5 +26,14 @@ class Classe{
             $s.= $alunno->toString();
         }
         return $s;
+    }
+
+    public function jsonSerialize() {
+        $attrs = [];
+        $class_vars = get_class_vars(get_class($this));
+        foreach ($class_vars as $name => $value) {
+            $attrs[$name]=$this->{$name};
+        }
+        return $attrs;
     }
 }
